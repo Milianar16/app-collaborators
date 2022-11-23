@@ -1,3 +1,5 @@
+import { NotificationService } from './../../services/notification.service';
+import { CollaboratorService } from './../../services/collaborator.service';
 import { Collaborator } from './../../models/collaborator';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,24 +11,28 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
 
   displayedColumns = ['foto', 'nome', 'email', 'cpf', 'cargo', 'setor', 'excluir', 'editar', 'detalhes'];
-  dataSource: Collaborator[] = [
-    {
-      nome: "Maria Miliana",
-      email: "mili1212@gmail.com",
-      cpf: "000.000.000-00",
-      cargo: "Desenvolvedora",
-      setor: "Tech",
-      estado: "RN",
-      cidade: "Natal",
-      remuneracao:100000,
-      dataNascimento: new Date(),
-      fotoUrl: "https://avatars.githubusercontent.com/u/113555082?v=4"
-    }
-  ];
+  dataSource: Collaborator[] = [];
 
-  constructor() { }
+  constructor(
+    private collaboratorService: CollaboratorService,
+    private notification: NotificationService
+  ) { }
 
   ngOnInit(): void {
+    this.initializeTable();
   }
 
+  private initializeTable(): void {
+    this.collaboratorService.findAll().subscribe(collaborators => {
+      this.dataSource = collaborators;
+    });
+  }
+
+  public deleteCollaborator(id: string): void {
+    this.collaboratorService.deleteCollaborator(id).subscribe(response => {
+      this.notification.showMessage("Apagado.");
+      this.initializeTable();
+    });
+  }
 }
+  
