@@ -17,9 +17,11 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { NewCollaboratorComponent } from './views/new-collaborator/new-collaborator.component';
 import{AngularFirestoreModule} from '@angular/fire/compat/firestore';
 import { EditCollaboratorComponent } from './views/edit-collaborator copy/edit-collaborator.component';
-
-
-
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { DetailsComponent } from './components/details/details.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AvatarPipe } from './pipes/avatar.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,9 @@ import { EditCollaboratorComponent } from './views/edit-collaborator copy/edit-c
     HeaderComponent,
     DashboardComponent,
     NewCollaboratorComponent,
-    EditCollaboratorComponent
+    EditCollaboratorComponent,
+    DetailsComponent,
+    AvatarPipe
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,10 @@ import { EditCollaboratorComponent } from './views/edit-collaborator copy/edit-c
     ReactiveFormsModule,
     MaterialModule,
     AngularFirestoreModule,
-    FormsModule
+    FormsModule,
+    AngularFireStorageModule,
+    MatProgressBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

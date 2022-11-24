@@ -1,7 +1,9 @@
-import { NotificationService } from './../../services/notification.service';
-import { CollaboratorService } from './../../services/collaborator.service';
-import { Collaborator } from './../../models/collaborator';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DetailsComponent } from 'src/app/components/details/details.component';
+import { Collaborator } from 'src/app/models/collaborator';
+import { CollaboratorService } from 'src/app/services/collaborator.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,18 +13,19 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
 
   displayedColumns = ['foto', 'nome', 'email', 'cpf', 'cargo', 'setor', 'excluir', 'editar', 'detalhes'];
-  dataSource: Collaborator[] = [];
+  dataSource!: Collaborator[];
 
   constructor(
     private collaboratorService: CollaboratorService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.initializeTable();
+    this.initilizeTable();
   }
 
-  private initializeTable(): void {
+  private initilizeTable(): void {
     this.collaboratorService.findAll().subscribe(collaborators => {
       this.dataSource = collaborators;
     });
@@ -30,9 +33,18 @@ export class DashboardComponent implements OnInit {
 
   public deleteCollaborator(id: string): void {
     this.collaboratorService.deleteCollaborator(id).subscribe(response => {
-      this.notification.showMessage("Apagado.");
-      this.initializeTable();
-    });
+      this.notification.showMessage("Apagado");
+      this.initilizeTable();
+    })
   }
+
+  public openDetails(collaborator: Collaborator): void {
+    this.dialog.open(DetailsComponent, {
+      width: '400px',
+      data: collaborator
+    })
+  }
+
 }
+
   
